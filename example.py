@@ -5,6 +5,8 @@ from typing import Tuple
 import os
 import sys
 import torch
+import torch_xla
+import torch_xla.core.xla_model as xm
 import fire
 import time
 import json
@@ -15,6 +17,7 @@ from fairscale.nn.model_parallel.initialize import initialize_model_parallel
 
 from llama import ModelArgs, Transformer, Tokenizer, LLaMA
 
+device = xm.xla_device()
 
 def setup_model_parallel() -> Tuple[int, int]:
     local_rank = int(os.environ.get("LOCAL_RANK", -1))
@@ -52,9 +55,11 @@ def load(
         max_seq_len=max_seq_len, max_batch_size=max_batch_size, **params
     )
     tokenizer = Tokenizer(model_path=tokenizer_path)
+    tokenizer.to(device)
     model_args.vocab_size = tokenizer.n_words
     torch.set_default_tensor_type(torch.cuda.HalfTensor)
     model = Transformer(model_args)
+    model.to(device)
     torch.set_default_tensor_type(torch.FloatTensor)
     model.load_state_dict(checkpoint, strict=False)
 
