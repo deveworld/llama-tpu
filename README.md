@@ -1,3 +1,12 @@
+# LLaMA on TPU (WIP)
+A new LLM, LLaMA was written in PyTorch.
+So to train LLaMA with TPU, we habe to convert to Tensorflow or run it on PyTorch/XLA.
+
+This repository trains LLaMA with huggingface on PyTorch/XLA.
+
+
+---
+# Original Readme
 # LLaMA 
 
 This repository is intended as a minimal, hackable and readable example to load [LLaMA](https://ai.facebook.com/blog/large-language-model-llama-meta-ai/) ([arXiv](https://arxiv.org/abs/2302.13971v1)) models and run inference.
